@@ -1,0 +1,25 @@
+INTERLIS 2.4;
+
+MODEL Testmodell_A
+AT "http://example.org" VERSION "2026-06-08" =
+  IMPORTS GeometryCHLV95_V2;
+  IMPORTS DMAVTYM_Topologie_V1_0;
+
+  TOPIC Abc =
+    BASKET OID AS INTERLIS.UUIDOID;
+    OID AS INTERLIS.UUIDOID;
+
+    STRUCTURE Typ =
+      Verlauf: MANDATORY GeometryCHLV95_V2.Line;
+      Art: MANDATORY (a, b, c);
+    END Typ;
+
+    CLASS Testklasse =
+      Geometrie: MANDATORY SURFACE WITH (STRAIGHTS, ARCS) VERTEX GeometryCHLV95_V2.Coord2 WITHOUT OVERLAPS > 0.002;
+      Typtasche: BAG {0..*} OF Typ;
+      MANDATORY CONSTRAINT C001: DMAVTYM_Topologie_V1_0.covers (THIS, >>Geometrie, Typtasche, >>Typ->Verlauf);
+    END Testklasse;
+
+  END Abc;
+
+END Testmodell_A.
